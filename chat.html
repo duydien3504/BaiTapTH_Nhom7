@@ -1,619 +1,674 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ứng dụng chat hiện đại với giao diện đẹp mắt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Ứng dụng chat hiện đại với giao diện đẹp mắt"
+    />
     <title>Chat - Ứng Dụng Trò Chuyện</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --accent: #ec4899;
-            --bg-dark: #0f172a;
-            --bg-light: #1e293b;
-            --bg-lighter: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --success: #10b981;
-            --danger: #ef4444;
-            --border: rgba(255, 255, 255, 0.1);
-            --shadow: rgba(0, 0, 0, 0.5);
-        }
+      :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --bg-dark: #0f172a;
+        --bg-light: #1e293b;
+        --bg-lighter: #334155;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --success: #10b981;
+        --danger: #ef4444;
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: rgba(0, 0, 0, 0.5);
+      }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: var(--text-primary);
-        }
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        color: var(--text-primary);
+      }
 
-        .chat-container {
-            width: 100%;
-            max-width: 1200px;
-            height: 90vh;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 20px 60px var(--shadow);
-            display: flex;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
+      .chat-container {
+        width: 100%;
+        max-width: 1200px;
+        height: 90vh;
+        background: rgba(98, 117, 161, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px var(--shadow);
+        display: flex;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
 
-        /* Sidebar */
+      /* Sidebar */
+      .sidebar {
+        width: 320px;
+        background: rgba(30, 41, 59, 0.8);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-header {
+        padding: 24px;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+      }
+
+      .sidebar-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .sidebar-header p {
+        font-size: 14px;
+        color: rgba(224, 200, 200, 0.8);
+      }
+
+      .search-box {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 12px 16px;
+        background: var(--bg-lighter);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-primary);
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+
+      .search-input::placeholder {
+        color: var(--text-secondary);
+      }
+
+      .contacts-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        margin-bottom: 4px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .contact-item:hover {
+        background: rgba(99, 102, 241, 0.1);
+      }
+
+      .contact-item.active {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.2) 0%,
+          rgba(139, 92, 246, 0.2) 100%
+        );
+        border-left: 3px solid var(--primary);
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 18px;
+        margin-right: 12px;
+        position: relative;
+      }
+
+      .status-dot {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 12px;
+        height: 12px;
+        background: var(--success);
+        border: 2px solid var(--bg-light);
+        border-radius: 50%;
+      }
+
+      .status-dot.offline {
+        background: var(--text-secondary);
+      }
+
+      .contact-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .contact-name {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .contact-message {
+        font-size: 13px;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .contact-time {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .unread-badge {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: var(--accent);
+        color: white;
+        border-radius: 12px;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      /* Chat Area */
+      .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-header {
+        padding: 20px 28px;
+        background: rgba(30, 41, 59, 0.6);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .chat-header-info {
+        display: flex;
+        align-items: center;
+      }
+
+      .chat-header-info .avatar {
+        margin-right: 16px;
+      }
+
+      .chat-user-name {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+
+      .chat-user-status {
+        font-size: 13px;
+        color: var(--success);
+      }
+
+      .chat-actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--bg-lighter);
+        border: none;
+        color: var(--text-primary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .action-btn:hover {
+        background: var(--primary);
+        transform: scale(1.05);
+      }
+
+      .messages-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .message {
+        display: flex;
+        gap: 12px;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.sent {
+        flex-direction: row-reverse;
+      }
+
+      .message .avatar {
+        margin: 0;
+      }
+
+      .message-content {
+        max-width: 60%;
+      }
+
+      .message-bubble {
+        padding: 12px 16px;
+        border-radius: 16px;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 4px;
+      }
+
+      .message.received .message-bubble {
+        background: var(--bg-lighter);
+        border-bottom-left-radius: 4px;
+      }
+
+      .message.sent .message-bubble {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-bottom-right-radius: 4px;
+        text-align: right;
+      }
+
+      .message-time {
+        font-size: 12px;
+        color: var(--text-secondary);
+        padding: 0 4px;
+      }
+
+      .message.sent .message-time {
+        text-align: right;
+      }
+
+      .input-area {
+        padding: 20px 28px;
+        background: rgba(30, 41, 59, 0.6);
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .input-wrapper {
+        flex: 1;
+        position: relative;
+      }
+
+      .message-input {
+        width: 100%;
+        padding: 14px 50px 14px 20px;
+        background: var(--bg-lighter);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        color: var(--text-primary);
+        font-size: 14px;
+        resize: none;
+        transition: all 0.3s ease;
+      }
+
+      .message-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+
+      .message-input::placeholder {
+        color: var(--text-secondary);
+      }
+
+      .attach-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .attach-btn:hover {
+        color: var(--primary);
+        background: rgba(99, 102, 241, 0.1);
+      }
+
+      .send-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+      }
+
+      .send-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.5);
+      }
+
+      .send-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--bg-lighter);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
         .sidebar {
-            width: 320px;
-            background: rgba(30, 41, 59, 0.8);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          z-index: 10;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
         }
 
-        .sidebar-header {
-            padding: 24px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        }
-
-        .sidebar-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .sidebar-header p {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .search-box {
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-lighter);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .search-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .contacts-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 8px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            margin-bottom: 4px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .contact-item:hover {
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .contact-item.active {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-            border-left: 3px solid var(--primary);
-        }
-
-        .avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 18px;
-            margin-right: 12px;
-            position: relative;
-        }
-
-        .status-dot {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 12px;
-            height: 12px;
-            background: var(--success);
-            border: 2px solid var(--bg-light);
-            border-radius: 50%;
-        }
-
-        .status-dot.offline {
-            background: var(--text-secondary);
-        }
-
-        .contact-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .contact-name {
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        .contact-message {
-            font-size: 13px;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .contact-time {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .unread-badge {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: var(--accent);
-            color: white;
-            border-radius: 12px;
-            padding: 2px 8px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* Chat Area */
-        .chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            padding: 20px 28px;
-            background: rgba(30, 41, 59, 0.6);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chat-header-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-header-info .avatar {
-            margin-right: 16px;
-        }
-
-        .chat-user-name {
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-
-        .chat-user-status {
-            font-size: 13px;
-            color: var(--success);
-        }
-
-        .chat-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .action-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--bg-lighter);
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .action-btn:hover {
-            background: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .messages-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .message {
-            display: flex;
-            gap: 12px;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.sent {
-            flex-direction: row-reverse;
-        }
-
-        .message .avatar {
-            margin: 0;
+        .sidebar.active {
+          transform: translateX(0);
         }
 
         .message-content {
-            max-width: 60%;
+          max-width: 80%;
         }
-
-        .message-bubble {
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 4px;
-        }
-
-        .message.received .message-bubble {
-            background: var(--bg-lighter);
-            border-bottom-left-radius: 4px;
-        }
-
-        .message.sent .message-bubble {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-bottom-right-radius: 4px;
-            text-align: right;
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: var(--text-secondary);
-            padding: 0 4px;
-        }
-
-        .message.sent .message-time {
-            text-align: right;
-        }
-
-        .input-area {
-            padding: 20px 28px;
-            background: rgba(30, 41, 59, 0.6);
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-
-        .message-input {
-            width: 100%;
-            padding: 14px 50px 14px 20px;
-            background: var(--bg-lighter);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            color: var(--text-primary);
-            font-size: 14px;
-            resize: none;
-            transition: all 0.3s ease;
-        }
-
-        .message-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .message-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .attach-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .attach-btn:hover {
-            color: var(--primary);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .send-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-        }
-
-        .send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.5);
-        }
-
-        .send-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg-lighter);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                z-index: 10;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .message-content {
-                max-width: 80%;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="chat-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h1>💬 Chat App</h1>
-                <p>Kết nối mọi lúc, mọi nơi</p>
-            </div>
-
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="🔍 Tìm kiếm liên hệ...">
-            </div>
-
-            <div class="contacts-list">
-                <div class="contact-item active">
-                    <div class="avatar">
-                        NV
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">Nguyễn Văn A</div>
-                        <div class="contact-message">Chào bạn, bạn khỏe không?</div>
-                    </div>
-                    <div class="contact-time">14:30</div>
-                    <div class="unread-badge">3</div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="avatar">
-                        TT
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">Trần Thị B</div>
-                        <div class="contact-message">OK, hẹn gặp lại!</div>
-                    </div>
-                    <div class="contact-time">12:15</div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="avatar">
-                        LH
-                        <div class="status-dot offline"></div>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">Lê Hoàng C</div>
-                        <div class="contact-message">Cảm ơn bạn nhiều!</div>
-                    </div>
-                    <div class="contact-time">Hôm qua</div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="avatar">
-                        PT
-                        <div class="status-dot"></div>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">Phạm Thị D</div>
-                        <div class="contact-message">Đã gửi một file</div>
-                    </div>
-                    <div class="contact-time">Hôm qua</div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="avatar">
-                        HM
-                        <div class="status-dot offline"></div>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">Hoàng Minh E</div>
-                        <div class="contact-message">See you later!</div>
-                    </div>
-                    <div class="contact-time">2 ngày trước</div>
-                </div>
-            </div>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h1>💬 Chat App v1</h1>
+          <p>Kết nối mọi lúc, mọi nơi</p>
         </div>
 
-        <!-- Chat Area -->
-        <div class="chat-area">
-            <div class="chat-header">
-                <div class="chat-header-info">
-                    <div class="avatar">
-                        NV
-                        <div class="status-dot"></div>
-                    </div>
-                    <div>
-                        <div class="chat-user-name">Nguyễn Văn A</div>
-                        <div class="chat-user-status">● Đang hoạt động</div>
-                    </div>
-                </div>
-                <div class="chat-actions">
-                    <button class="action-btn" title="Gọi thoại">📞</button>
-                    <button class="action-btn" title="Gọi video">📹</button>
-                    <button class="action-btn" title="Thông tin">ℹ️</button>
-                </div>
-            </div>
-
-            <div class="messages-area" id="messagesArea">
-                <div class="message received">
-                    <div class="avatar">NV</div>
-                    <div class="message-content">
-                        <div class="message-bubble">Chào bạn! Mình là Nguyễn Văn A. Rất vui được làm quen với bạn! 👋</div>
-                        <div class="message-time">14:20</div>
-                    </div>
-                </div>
-
-                <div class="message sent">
-                    <div class="avatar">B</div>
-                    <div class="message-content">
-                        <div class="message-bubble">Chào bạn! Mình cũng rất vui được làm quen! 😊</div>
-                        <div class="message-time">14:22</div>
-                    </div>
-                </div>
-
-                <div class="message received">
-                    <div class="avatar">NV</div>
-                    <div class="message-content">
-                        <div class="message-bubble">Bạn khỏe không? Hôm nay thời tiết đẹp nhỉ? ☀️</div>
-                        <div class="message-time">14:25</div>
-                    </div>
-                </div>
-
-                <div class="message sent">
-                    <div class="avatar">B</div>
-                    <div class="message-content">
-                        <div class="message-bubble">Mình khỏe. Đúng vậy, thời tiết hôm nay rất đẹp!</div>
-                        <div class="message-time">14:27</div>
-                    </div>
-                </div>
-
-                <div class="message received">
-                    <div class="avatar">NV</div>
-                    <div class="message-content">
-                        <div class="message-bubble">Cuối tuần này bạn có rảnh không? Mình định rủ đi chơi cùng! 🎉</div>
-                        <div class="message-time">14:30</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="input-area">
-                <div class="input-wrapper">
-                    <input type="text" class="message-input" id="messageInput" placeholder="Nhập tin nhắn..." />
-                    <button class="attach-btn" title="Đính kèm file">📎</button>
-                </div>
-                <button class="send-btn" id="sendBtn" title="Gửi">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                    </svg>
-                </button>
-            </div>
+        <div class="search-box">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="🔍 Tìm kiếm liên hệ..."
+          />
         </div>
+
+        <div class="contacts-list">
+          <div class="contact-item active">
+            <div class="avatar">
+              NV
+              <div class="status-dot"></div>
+            </div>
+            <div class="contact-info">
+              <div class="contact-name">Nguyễn Văn A</div>
+              <div class="contact-message">Chào bạn, bạn khỏe không?</div>
+            </div>
+            <div class="contact-time">14:30</div>
+            <div class="unread-badge">3</div>
+          </div>
+
+          <div class="contact-item">
+            <div class="avatar">
+              TT
+              <div class="status-dot"></div>
+            </div>
+            <div class="contact-info">
+              <div class="contact-name">Trần Thị B</div>
+              <div class="contact-message">OK, hẹn gặp lại!</div>
+            </div>
+            <div class="contact-time">12:15</div>
+          </div>
+
+          <div class="contact-item">
+            <div class="avatar">
+              LH
+              <div class="status-dot offline"></div>
+            </div>
+            <div class="contact-info">
+              <div class="contact-name">Lê Hoàng C</div>
+              <div class="contact-message">Cảm ơn bạn nhiều!</div>
+            </div>
+            <div class="contact-time">Hôm qua</div>
+          </div>
+
+          <div class="contact-item">
+            <div class="avatar">
+              PT
+              <div class="status-dot"></div>
+            </div>
+            <div class="contact-info">
+              <div class="contact-name">Phạm Thị D</div>
+              <div class="contact-message">Đã gửi một file</div>
+            </div>
+            <div class="contact-time">Hôm qua</div>
+          </div>
+
+          <div class="contact-item">
+            <div class="avatar">
+              HM
+              <div class="status-dot offline"></div>
+            </div>
+            <div class="contact-info">
+              <div class="contact-name">Hoàng Minh E</div>
+              <div class="contact-message">See you later!</div>
+            </div>
+            <div class="contact-time">2 ngày trước</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Area -->
+      <div class="chat-area">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <div class="avatar">
+              NV
+              <div class="status-dot"></div>
+            </div>
+            <div>
+              <div class="chat-user-name">Nguyễn Văn A</div>
+              <div class="chat-user-status">● Đang hoạt động</div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <button class="action-btn" title="Gọi thoại">📞</button>
+            <button class="action-btn" title="Gọi video">📹</button>
+            <button class="action-btn" title="Thông tin">ℹ️</button>
+          </div>
+        </div>
+
+        <div class="messages-area" id="messagesArea">
+          <div class="message received">
+            <div class="avatar">NV</div>
+            <div class="message-content">
+              <div class="message-bubble">
+                Chào bạn! Mình là Nguyễn Văn A. Rất vui được làm quen với bạn!
+                👋
+              </div>
+              <div class="message-time">14:20</div>
+            </div>
+          </div>
+
+          <div class="message sent">
+            <div class="avatar">B</div>
+            <div class="message-content">
+              <div class="message-bubble">
+                Chào bạn! Mình cũng rất vui được làm quen! 😊
+              </div>
+              <div class="message-time">14:22</div>
+            </div>
+          </div>
+
+          <div class="message received">
+            <div class="avatar">NV</div>
+            <div class="message-content">
+              <div class="message-bubble">
+                Bạn khỏe không? Hôm nay thời tiết đẹp nhỉ? ☀️
+              </div>
+              <div class="message-time">14:25</div>
+            </div>
+          </div>
+
+          <div class="message sent">
+            <div class="avatar">B</div>
+            <div class="message-content">
+              <div class="message-bubble">
+                Mình khỏe. Đúng vậy, thời tiết hôm nay rất đẹp!
+              </div>
+              <div class="message-time">14:27</div>
+            </div>
+          </div>
+
+          <div class="message received">
+            <div class="avatar">NV</div>
+            <div class="message-content">
+              <div class="message-bubble">
+                Cuối tuần này bạn có rảnh không? Mình định rủ đi chơi cùng! 🎉
+              </div>
+              <div class="message-time">14:30</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-area">
+          <div class="input-wrapper">
+            <input
+              type="text"
+              class="message-input"
+              id="messageInput"
+              placeholder="Nhập tin nhắn..."
+            />
+            <button class="attach-btn" title="Đính kèm file">📎</button>
+          </div>
+          <button class="send-btn" id="sendBtn" title="Gửi">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <script>
-        // DOM Elements
-        const messageInput = document.getElementById('messageInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const messagesArea = document.getElementById('messagesArea');
-        const searchInput = document.querySelector('.search-input');
-        const contactItems = document.querySelectorAll('.contact-item');
+      // DOM Elements
+      const messageInput = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const messagesArea = document.getElementById("messagesArea");
+      const searchInput = document.querySelector(".search-input");
+      const contactItems = document.querySelectorAll(".contact-item");
 
-        // Send Message Function
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message === '') return;
+      // Send Message Function
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message === "") return;
 
-            const now = new Date();
-            const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        const now = new Date();
+        const time =
+          now.getHours() +
+          ":" +
+          (now.getMinutes() < 10 ? "0" : "") +
+          now.getMinutes();
 
-            const messageHTML = `
+        const messageHTML = `
                 <div class="message sent">
                     <div class="avatar">B</div>
                     <div class="message-content">
@@ -623,24 +678,30 @@
                 </div>
             `;
 
-            messagesArea.insertAdjacentHTML('beforeend', messageHTML);
-            messageInput.value = '';
-            messagesArea.scrollTop = messagesArea.scrollHeight;
+        messagesArea.insertAdjacentHTML("beforeend", messageHTML);
+        messageInput.value = "";
+        messagesArea.scrollTop = messagesArea.scrollHeight;
 
-            // Simulate response after 1-2 seconds
-            setTimeout(() => {
-                const responses = [
-                    'Được rồi! 👍',
-                    'Mình hiểu rồi!',
-                    'OK, để mình xem nhé!',
-                    'Cảm ơn bạn! 😊',
-                    'Sounds good!',
-                    'Tuyệt vời! 🎉'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                const responseTime = now.getHours() + ':' + (now.getMinutes() + 1 < 10 ? '0' : '') + (now.getMinutes() + 1);
+        // Simulate response after 1-2 seconds
+        setTimeout(
+          () => {
+            const responses = [
+              "Được rồi! 👍",
+              "Mình hiểu rồi!",
+              "OK, để mình xem nhé!",
+              "Cảm ơn bạn! 😊",
+              "Sounds good!",
+              "Tuyệt vời! 🎉",
+            ];
+            const randomResponse =
+              responses[Math.floor(Math.random() * responses.length)];
+            const responseTime =
+              now.getHours() +
+              ":" +
+              (now.getMinutes() + 1 < 10 ? "0" : "") +
+              (now.getMinutes() + 1);
 
-                const responseHTML = `
+            const responseHTML = `
                     <div class="message received">
                         <div class="avatar">NV</div>
                         <div class="message-content">
@@ -649,64 +710,74 @@
                         </div>
                     </div>
                 `;
-                messagesArea.insertAdjacentHTML('beforeend', responseHTML);
-                messagesArea.scrollTop = messagesArea.scrollHeight;
-            }, 1000 + Math.random() * 1000);
+            messagesArea.insertAdjacentHTML("beforeend", responseHTML);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+          },
+          1000 + Math.random() * 1000,
+        );
+      }
+
+      // Escape HTML to prevent XSS
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Event Listeners
+      sendBtn.addEventListener("click", sendMessage);
+      messageInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
         }
+      });
 
-        // Escape HTML to prevent XSS
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Event Listeners
-        sendBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+      // Search Functionality
+      searchInput.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        contactItems.forEach((item) => {
+          const name = item
+            .querySelector(".contact-name")
+            .textContent.toLowerCase();
+          if (name.includes(searchTerm)) {
+            item.style.display = "flex";
+          } else {
+            item.style.display = "none";
+          }
         });
+      });
 
-        // Search Functionality
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            contactItems.forEach(item => {
-                const name = item.querySelector('.contact-name').textContent.toLowerCase();
-                if (name.includes(searchTerm)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+      // Contact Selection
+      contactItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          contactItems.forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+
+          const name = item.querySelector(".contact-name").textContent;
+          const avatar = item
+            .querySelector(".avatar")
+            .textContent.trim()
+            .substring(0, 2);
+          const status = item
+            .querySelector(".status-dot")
+            .classList.contains("offline")
+            ? "Không hoạt động"
+            : "Đang hoạt động";
+
+          document.querySelector(".chat-user-name").textContent = name;
+          document.querySelector(".chat-user-status").textContent =
+            "● " + status;
+          document.querySelector(".chat-header .avatar").textContent = avatar;
+
+          // Remove unread badge
+          const badge = item.querySelector(".unread-badge");
+          if (badge) badge.remove();
         });
+      });
 
-        // Contact Selection
-        contactItems.forEach(item => {
-            item.addEventListener('click', () => {
-                contactItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                
-                const name = item.querySelector('.contact-name').textContent;
-                const avatar = item.querySelector('.avatar').textContent.trim().substring(0, 2);
-                const status = item.querySelector('.status-dot').classList.contains('offline') 
-                    ? 'Không hoạt động' 
-                    : 'Đang hoạt động';
-                
-                document.querySelector('.chat-user-name').textContent = name;
-                document.querySelector('.chat-user-status').textContent = '● ' + status;
-                document.querySelector('.chat-header .avatar').textContent = avatar;
-                
-                // Remove unread badge
-                const badge = item.querySelector('.unread-badge');
-                if (badge) badge.remove();
-            });
-        });
-
-        // Auto-scroll to bottom on load
-        messagesArea.scrollTop = messagesArea.scrollHeight;
+      // Auto-scroll to bottom on load
+      messagesArea.scrollTop = messagesArea.scrollHeight;
     </script>
-</body>
+  </body>
 </html>
