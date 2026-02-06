@@ -4,7 +4,7 @@
 
 -Võ Thái Toàn 
 
--Hồng Duy Điền
+-Hồng Duy Điền (Lead)
 
 -Trần Quốc Nhựt
 
